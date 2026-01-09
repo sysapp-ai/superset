@@ -47,6 +47,7 @@ import {
   Tooltip,
   DeleteModal,
   UnsavedChangesModal,
+  Grid,
 } from '@superset-ui/core/components';
 import { findPermission } from 'src/utils/findPermission';
 import { safeStringify } from 'src/utils/safeStringify';
@@ -190,8 +191,12 @@ interface PropertiesChanges {
   title?: string;
 }
 
+const { useBreakpoint } = Grid;
+
 const Header = (): ReactElement => {
   const dispatch = useDispatch();
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
   const [didNotifyMaxUndoHistoryToast, setDidNotifyMaxUndoHistoryToast] =
     useState<boolean>(false);
   const [emphasizeUndo, setEmphasizeUndo] = useState<boolean>(false);
@@ -656,7 +661,7 @@ const Header = (): ReactElement => {
 
   const titlePanelAdditionalItems = useMemo(
     () => [
-      !editMode && (
+      !editMode && !isMobile && (
         <PublishedStatus
           dashboardId={dashboardInfo.id}
           isPublished={isPublished}
@@ -665,12 +670,13 @@ const Header = (): ReactElement => {
           userCanSave={!!userCanSaveAs}
         />
       ),
-      !editMode && !isEmbedded && metadataBar,
+      !editMode && !isEmbedded && !isMobile && metadataBar,
     ],
     [
       boundActionCreators.savePublished,
       dashboardInfo.id,
       editMode,
+      isMobile,
       metadataBar,
       isEmbedded,
       isPublished,
@@ -763,7 +769,7 @@ const Header = (): ReactElement => {
         ) : (
           <div css={actionButtonsStyle}>
             {NavExtension && <NavExtension />}
-            {userCanEdit && (
+            {userCanEdit && !isMobile && (
               <Button
                 buttonStyle="secondary"
                 onClick={handleEnterEditMode}
@@ -791,6 +797,7 @@ const Header = (): ReactElement => {
       handleCtrlZ,
       handleEnterEditMode,
       hasUnsavedChanges,
+      isMobile,
       overwriteDashboard,
       redoLength,
       toggleEditMode,
@@ -829,6 +836,10 @@ const Header = (): ReactElement => {
     userCanCurate,
     userCanExport,
     isLoading,
+    isMobile,
+    isStarred,
+    isPublished,
+    saveFaveStar: boundActionCreators.saveFaveStar,
     showReportModal,
     showPropertiesModal,
     showRefreshModal,
@@ -858,7 +869,7 @@ const Header = (): ReactElement => {
           ) => void,
         }}
         additionalActionsMenu={menu as ReactElement}
-        showFaveStar={!!(user?.userId && dashboardInfo?.id)}
+        showFaveStar={!!(user?.userId && dashboardInfo?.id && !isMobile)}
         showTitlePanelItems
       />
       {showingPropertiesModal && (
