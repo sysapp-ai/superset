@@ -32,7 +32,7 @@ import {
   FeatureFlag,
   getExtensionsRegistry,
 } from '@superset-ui/core';
-import { styled, css, t } from '@apache-superset/core/ui';
+import { styled, css, t, useTheme } from '@apache-superset/core/ui';
 import { Global } from '@emotion/react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -68,7 +68,10 @@ import setPeriodicRunner, {
 import ReportModal from 'src/features/reports/ReportModal';
 import { deleteActiveReport } from 'src/features/reports/ReportModal/actions';
 import type { ReportObject } from 'src/features/reports/types';
-import { PageHeaderWithActions } from '@superset-ui/core/components/PageHeaderWithActions';
+import {
+  PageHeaderWithActions,
+  menuTriggerStyles,
+} from '@superset-ui/core/components/PageHeaderWithActions';
 import { useUnsavedChangesPrompt } from 'src/hooks/useUnsavedChangesPrompt';
 import type { RootState, DashboardInfo } from 'src/dashboard/types';
 import DashboardEmbedModal from '../EmbeddedModal';
@@ -193,8 +196,13 @@ interface PropertiesChanges {
 
 const { useBreakpoint } = Grid;
 
-const Header = (): ReactElement => {
+interface HeaderComponentProps {
+  onOpenMobileFilters?: () => void;
+}
+
+const Header = ({ onOpenMobileFilters }: HeaderComponentProps): ReactElement => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const screens = useBreakpoint();
   const isMobile = !screens.md;
   const [didNotifyMaxUndoHistoryToast, setDidNotifyMaxUndoHistoryToast] =
@@ -859,6 +867,22 @@ const Header = (): ReactElement => {
         editableTitleProps={editableTitleProps}
         certificatiedBadgeProps={certifiedBadgeProps}
         faveStarProps={faveStarProps}
+        leftPanelItems={
+          onOpenMobileFilters && (
+            <Button
+              css={menuTriggerStyles}
+              buttonStyle="tertiary"
+              aria-label={t('Open filters')}
+              onClick={onOpenMobileFilters}
+              data-test="mobile-filters-trigger"
+            >
+              <Icons.FilterOutlined
+                iconColor={theme.colorPrimary}
+                iconSize="l"
+              />
+            </Button>
+          )
+        }
         titlePanelAdditionalItems={titlePanelAdditionalItems}
         rightPanelAdditionalItems={rightPanelAdditionalItems}
         menuDropdownProps={{
