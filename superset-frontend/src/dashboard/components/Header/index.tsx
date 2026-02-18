@@ -68,10 +68,7 @@ import setPeriodicRunner, {
 import ReportModal from 'src/features/reports/ReportModal';
 import { deleteActiveReport } from 'src/features/reports/ReportModal/actions';
 import type { ReportObject } from 'src/features/reports/types';
-import {
-  PageHeaderWithActions,
-  menuTriggerStyles,
-} from '@superset-ui/core/components/PageHeaderWithActions';
+import { PageHeaderWithActions } from '@superset-ui/core/components/PageHeaderWithActions';
 import { useUnsavedChangesPrompt } from 'src/hooks/useUnsavedChangesPrompt';
 import type { RootState, DashboardInfo } from 'src/dashboard/types';
 import DashboardEmbedModal from '../EmbeddedModal';
@@ -200,7 +197,9 @@ interface HeaderComponentProps {
   onOpenMobileFilters?: () => void;
 }
 
-const Header = ({ onOpenMobileFilters }: HeaderComponentProps): ReactElement => {
+const Header = ({
+  onOpenMobileFilters,
+}: HeaderComponentProps): ReactElement => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const screens = useBreakpoint();
