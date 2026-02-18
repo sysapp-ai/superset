@@ -162,6 +162,15 @@ const onRefresh = jest.fn();
 const dashboardInfoChanged = jest.fn();
 const dashboardTitleChanged = jest.fn();
 
+// Mock useBreakpoint to return desktop breakpoints (prevents mobile rendering)
+jest.mock('antd', () => ({
+  ...jest.requireActual('antd'),
+  Grid: {
+    ...jest.requireActual('antd').Grid,
+    useBreakpoint: () => ({ xs: true, sm: true, md: true, lg: true, xl: true }),
+  },
+}));
+
 jest.mock('src/hooks/useUnsavedChangesPrompt', () => ({
   useUnsavedChangesPrompt: jest.fn(),
 }));
