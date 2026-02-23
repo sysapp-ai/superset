@@ -277,11 +277,13 @@ function Chart({
       const message = chartAlert || queryResponse?.message;
 
       // if datasource is still loading, don't render JS errors
+      // but always show backend errors even during loading
       if (
         chartAlert !== undefined &&
         chartAlert !== NONEXISTENT_DATASET &&
         datasource === PLACEHOLDER_DATASOURCE &&
-        datasetsStatus !== ResourceStatus.Error
+        datasetsStatus !== ResourceStatus.Error &&
+        !queryResponse?.errors?.length
       ) {
         return (
           <Styles
