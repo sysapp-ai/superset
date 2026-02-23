@@ -58,7 +58,7 @@ from sqlalchemy import and_, Column, or_, UniqueConstraint
 from sqlalchemy.exc import MultipleResultsFound
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import Mapper, validates
-from sqlalchemy.sql.elements import ColumnElement, literal_column, TextClause
+from sqlalchemy.sql.elements import ColumnElement, Grouping, literal_column, TextClause
 from sqlalchemy.sql.expression import Label, Select, TextAsFrom
 from sqlalchemy.sql.selectable import Alias, TableClause
 from sqlalchemy_utils import UUIDType
@@ -3221,7 +3221,7 @@ class ExploreMixin:  # pylint: disable=too-many-public-methods
                     schema=self.schema,
                     template_processor=template_processor,
                 )
-                where_clause_and += [self.text(f"({where})")]
+                where_clause_and += [Grouping(self.text(where))]
             having = extras.get("having")
             if having:
                 having = self._process_select_expression(
@@ -3231,7 +3231,7 @@ class ExploreMixin:  # pylint: disable=too-many-public-methods
                     schema=self.schema,
                     template_processor=template_processor,
                 )
-                having_clause_and += [self.text(f"({having})")]
+                having_clause_and += [Grouping(self.text(having))]
 
         if apply_fetch_values_predicate and self.fetch_values_predicate:
             qry = qry.where(
