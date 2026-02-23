@@ -2980,7 +2980,7 @@ class ExploreMixin:  # pylint: disable=too-many-public-methods
         where_clause_and: list[ColumnElement] = []
         having_clause_and: list[ColumnElement] = []
 
-        for flt in filter:  # type: ignore
+        for flt in filter or []:
             if not all(flt.get(s) for s in ["col", "op"]):
                 continue
             flt_col = flt["col"]
@@ -3221,7 +3221,7 @@ class ExploreMixin:  # pylint: disable=too-many-public-methods
                     schema=self.schema,
                     template_processor=template_processor,
                 )
-                where_clause_and += [self.text(where)]
+                where_clause_and += [self.text(f"({where})")]
             having = extras.get("having")
             if having:
                 having = self._process_select_expression(
@@ -3231,7 +3231,7 @@ class ExploreMixin:  # pylint: disable=too-many-public-methods
                     schema=self.schema,
                     template_processor=template_processor,
                 )
-                having_clause_and += [self.text(having)]
+                having_clause_and += [self.text(f"({having})")]
 
         if apply_fetch_values_predicate and self.fetch_values_predicate:
             qry = qry.where(
