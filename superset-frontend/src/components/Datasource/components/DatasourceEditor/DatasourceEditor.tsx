@@ -2156,61 +2156,6 @@ function DatasourceEditor({
               </Fieldset>
             </FormContainer>
           }
-          collection={sortedMetrics}
-          allowAddItem
-          onChange={this.onDatasourcePropChange.bind(this, 'metrics')}
-          itemGenerator={() => ({
-            metric_name: t('<new metric>'),
-            verbose_name: '',
-            expression: '',
-          })}
-          itemCellProps={{
-            expression: () => ({
-              width: '240px',
-            }),
-          }}
-          itemRenderers={{
-            metric_name: (v, onChange, _, record) => (
-              <FlexRowContainer>
-                {record.is_certified && (
-                  <CertifiedBadge
-                    certifiedBy={record.certified_by}
-                    details={record.certification_details}
-                  />
-                )}
-                {record.warning_markdown && (
-                  <WarningIconWithTooltip
-                    warningMarkdown={record.warning_markdown}
-                  />
-                }
-              />
-              <Field
-                label={t('Certification details')}
-                fieldKey="certification_details"
-                description={t('Details of the certification')}
-                control={
-                  <TextControl
-                    controlId="certification_details"
-                    placeholder={t('Certification details')}
-                  />
-                }
-              />
-              <Field
-                label={t('Warning')}
-                fieldKey="warning_markdown"
-                description={t('Optional warning about use of this metric')}
-                control={
-                  <TextAreaControl
-                    controlId="warning_markdown"
-                    language="markdown"
-                    offerEditInModal={false}
-                    resize="vertical"
-                  />
-                }
-              />
-            </Fieldset>
-          </FormContainer>
-        }
         collection={sortedMetrics}
         allowAddItem
         onChange={(value: unknown) => onDatasourcePropChange('metrics', value)}
@@ -2283,7 +2228,7 @@ function DatasourceEditor({
         stickyHeader
       />
     );
-  }, [datasource, sortMetrics, onDatasourcePropChange]);
+  }, [datasource, sortMetrics, onDatasourcePropChange, metricSearchTerm]);
 
   const sortedMetrics = useMemo(
     () => (datasource.metrics?.length ? sortMetrics(datasource.metrics) : []),
