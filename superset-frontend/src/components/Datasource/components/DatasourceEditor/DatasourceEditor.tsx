@@ -2156,77 +2156,80 @@ function DatasourceEditor({
               </Fieldset>
             </FormContainer>
           }
-        collection={sortedMetrics}
-        allowAddItem
-        onChange={(value: unknown) => onDatasourcePropChange('metrics', value)}
-        itemGenerator={() => ({
-          metric_name: t('<new metric>'),
-          verbose_name: '',
-          expression: '',
-        })}
-        itemCellProps={{
-          expression: () => ({
-            width: '240px',
-          }),
-        }}
-        itemRenderers={{
-          metric_name: (v, onItemChange, _, record) => (
-            <FlexRowContainer>
-              {record.is_certified && (
-                <CertifiedBadge
-                  certifiedBy={record.certified_by}
-                  details={record.certification_details}
+          collection={sortedMetrics}
+          allowAddItem
+          onChange={(value: unknown) =>
+            onDatasourcePropChange('metrics', value)
+          }
+          itemGenerator={() => ({
+            metric_name: t('<new metric>'),
+            verbose_name: '',
+            expression: '',
+          })}
+          itemCellProps={{
+            expression: () => ({
+              width: '240px',
+            }),
+          }}
+          itemRenderers={{
+            metric_name: (v, onItemChange, _, record) => (
+              <FlexRowContainer>
+                {record.is_certified && (
+                  <CertifiedBadge
+                    certifiedBy={record.certified_by}
+                    details={record.certification_details}
+                  />
+                )}
+                {record.warning_markdown && (
+                  <WarningIconWithTooltip
+                    warningMarkdown={record.warning_markdown}
+                  />
+                )}
+                <EditableTitle
+                  canEdit
+                  title={v as string}
+                  onSaveTitle={onItemChange}
+                  maxWidth={300}
                 />
-              )}
-              {record.warning_markdown && (
-                <WarningIconWithTooltip
-                  warningMarkdown={record.warning_markdown}
-                />
-              )}
-              <EditableTitle
+              </FlexRowContainer>
+            ),
+            verbose_name: (v, onItemChange) => (
+              <TextControl value={v as string} onChange={onItemChange} />
+            ),
+            expression: (v, onItemChange) => (
+              <TextAreaControl
                 canEdit
-                title={v as string}
-                onSaveTitle={onItemChange}
-                maxWidth={300}
+                initialValue={v as string}
+                onChange={onItemChange}
+                extraClasses={['datasource-sql-expression']}
+                language="sql"
+                offerEditInModal={false}
+                minLines={5}
+                textAreaStyles={{ minWidth: '200px', maxWidth: '450px' }}
+                resize="both"
               />
-            </FlexRowContainer>
-          ),
-          verbose_name: (v, onItemChange) => (
-            <TextControl value={v as string} onChange={onItemChange} />
-          ),
-          expression: (v, onItemChange) => (
-            <TextAreaControl
-              canEdit
-              initialValue={v as string}
-              onChange={onItemChange}
-              extraClasses={['datasource-sql-expression']}
-              language="sql"
-              offerEditInModal={false}
-              minLines={5}
-              textAreaStyles={{ minWidth: '200px', maxWidth: '450px' }}
-              resize="both"
-            />
-          ),
-          description: (v, onItemChange, label) => (
-            <StackedField
-              label={label}
-              formElement={
-                <TextControl value={v as string} onChange={onItemChange} />
-              }
-            />
-          ),
-          d3format: (v, onItemChange, label) => (
-            <StackedField
-              label={label}
-              formElement={
-                <TextControl value={v as string} onChange={onItemChange} />
-              }
-            />
-          ),
-        }}
-        allowDeletes
-        stickyHeader
-      />
+            ),
+            description: (v, onItemChange, label) => (
+              <StackedField
+                label={label}
+                formElement={
+                  <TextControl value={v as string} onChange={onItemChange} />
+                }
+              />
+            ),
+            d3format: (v, onItemChange, label) => (
+              <StackedField
+                label={label}
+                formElement={
+                  <TextControl value={v as string} onChange={onItemChange} />
+                }
+              />
+            ),
+          }}
+          allowDeletes
+          stickyHeader
+        />
+      </div>
     );
   }, [datasource, sortMetrics, onDatasourcePropChange, metricSearchTerm]);
 
