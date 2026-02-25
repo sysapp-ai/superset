@@ -613,7 +613,12 @@ export default function transformProps(
           }
           rows.push(totalRow);
         }
-        return tooltipHtml(rows, tooltipFormatter(xValue), focusedRow);
+        // commented by lakshman on 13th Jan 2026
+        // return tooltipHtml(rows, tooltipFormatter(xValue), focusedRow);
+        // code changes added for tooltip space addition
+        const alignedRows = rows.map(([label, value]) => [label,`<span style="margin-left:8px;font-weight:200">${value}</span>`,])
+        return tooltipHtml(alignedRows, tooltipFormatter(xValue), focusedRow);
+
       },
     },
     legend: {

@@ -171,12 +171,23 @@ export default function transformProps(
         name,
         groupbyLabels.map(col => data_point[col] as string),
       );
+      // Commented by Lakshman on 29th Jan, 2026
+      // let item: GaugeDataItemOption = {
+      //  value: data_point[metricLabel] as number,
+      //  name,
+      //  itemStyle: {
+      //    color: colorFn(colorLabel, sliceId),
+      //  },
+      // new lines of code inserted by Lakshman on 29th Jan, 2026
+      const rawValue = data_point[metricLabel];
+      const safeValue = rawValue === null || rawValue === undefined || isNaN(rawValue as number) ? 0 : Number(rawValue);
       let item: GaugeDataItemOption = {
-        value: data_point[metricLabel] as number,
+        value: safeValue,
         name,
         itemStyle: {
           color: colorFn(colorLabel, sliceId),
         },
+
         title: {
           offsetCenter: [
             '0%',
@@ -281,16 +292,29 @@ export default function transformProps(
     length: axisTickLength,
     lineStyle: gaugeSeriesOptions.axisTick?.lineStyle as AxisTickLineStyle,
   };
+  // Commented by Lakshman on 29th Jan, 2026
+  // const detail = {
+  //  valueAnimation: animation,
+  //  formatter: (value: number) => formatValue(value),
+  //  color: gaugeSeriesOptions.detail?.color,
+  // };
+  // New lines added by Lakshman on 29th Jan, 2026
   const detail = {
-    valueAnimation: animation,
-    formatter: (value: number) => formatValue(value),
-    color: gaugeSeriesOptions.detail?.color,
+  valueAnimation: animation,
+  formatter: (value: number) =>
+      formatValue(Number.isFinite(value) ? value : 0),
+  color: gaugeSeriesOptions.detail?.color,
   };
+
   const tooltip = {
     ...getDefaultTooltip(refs),
     formatter: (params: CallbackDataParams) => {
       const { name, value } = params;
-      return tooltipHtml([[metricLabel, formatValue(value as number)]], name);
+      // Commented by Lakshman on 29th Jan, 2026
+      // return tooltipHtml([[metricLabel, `<span style="margin-left:8px;font-weight:200">${formatValue(value as number)}</span>`,], ], name,);
+      // new line inserted by Lakshman on 29th Jan, 2026
+      return tooltipHtml([[metricLabel, `<span style="margin-left:8px;font-weight:200">${formatValue(Number.isFinite(value as number) ? (value as number) : 0)}</span>`,], ], name,);
+
     },
   };
 
