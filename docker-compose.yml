@@ -42,16 +42,7 @@ x-common-build: &common-build
     BUILD_TRANSLATIONS: ${BUILD_TRANSLATIONS:-false}
 
 services:
-  nginx:
-    image: nginx:latest
-    container_name: superset_nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  
   redis:
     image: redis:7
     container_name: superset_cache
@@ -63,10 +54,7 @@ services:
 
   db:
     env_file:
-      - path: docker/.env # default
-        required: true
-      - path: docker/.env-local # optional override
-        required: false
+       - docker/.env # default
     image: postgres:15
     container_name: superset_db
     restart: unless-stopped
@@ -78,10 +66,7 @@ services:
 
   superset:
     env_file:
-      - path: docker/.env # default
-        required: true
-      - path: docker/.env-local # optional override
-        required: false
+       - docker/.env # default
     build:
       <<: *common-build
     container_name: superset_app
@@ -141,10 +126,7 @@ services:
     container_name: superset_init
     command: ["/app/docker/docker-init.sh"]
     env_file:
-      - path: docker/.env # default
-        required: true
-      - path: docker/.env-local # optional override
-        required: false
+       - docker/.env # default
     depends_on:
       db:
         condition: service_started
@@ -154,7 +136,7 @@ services:
     volumes: *superset-volumes
     environment:
       CYPRESS_CONFIG: "${CYPRESS_CONFIG:-}"
-      SUPERSET_LOAD_EXAMPLES: "${SUPERSET_LOAD_EXAMPLES:-yes}"
+      SUPERSET_LOAD_EXAMPLES: "${SUPERSET_LOAD_EXAMPLES:-no}"
       SUPERSET_LOG_LEVEL: "${SUPERSET_LOG_LEVEL:-info}"
     healthcheck:
       disable: true
@@ -172,8 +154,8 @@ services:
     environment:
       # set this to false if you have perf issues running the npm i; npm run dev in-docker
       # if you do so, you have to run this manually on the host, which should perform better!
-      BUILD_SUPERSET_FRONTEND_IN_DOCKER: true
-      NPM_RUN_PRUNE: false
+      BUILD_SUPERSET_FRONTEND_IN_DOCKER: "true"
+      NPM_RUN_PRUNE: "false"
       SCARF_ANALYTICS: "${SCARF_ANALYTICS:-}"
       # configuring the dev-server to use the host.docker.internal to connect to the backend
       superset: "http://host.docker.internal:8088"
@@ -182,10 +164,7 @@ services:
     container_name: superset_node
     command: ["/app/docker/docker-frontend.sh"]
     env_file:
-      - path: docker/.env # default
-        required: true
-      - path: docker/.env-local # optional override
-        required: false
+       - docker/.env # default
     volumes: *superset-volumes
 
   superset-worker:
@@ -194,10 +173,7 @@ services:
     container_name: superset_worker
     command: ["/app/docker/docker-bootstrap.sh", "worker"]
     env_file:
-      - path: docker/.env # default
-        required: true
-      - path: docker/.env-local # optional override
-        required: false
+       - docker/.env # default
     environment:
       CELERYD_CONCURRENCY: 2
       CYPRESS_CONFIG: "${CYPRESS_CONFIG:-}"
@@ -222,10 +198,7 @@ services:
     container_name: superset_worker_beat
     command: ["/app/docker/docker-bootstrap.sh", "beat"]
     env_file:
-      - path: docker/.env # default
-        required: true
-      - path: docker/.env-local # optional override
-        required: false
+       - docker/.env # default
     restart: unless-stopped
     depends_on:
       - superset-worker
@@ -243,10 +216,7 @@ services:
     container_name: superset_tests_worker
     command: ["/app/docker/docker-bootstrap.sh", "worker"]
     env_file:
-      - path: docker/.env # default
-        required: true
-      - path: docker/.env-local # optional override
-        required: false
+       - docker/.env # default
     profiles:
       - optional
     environment:
