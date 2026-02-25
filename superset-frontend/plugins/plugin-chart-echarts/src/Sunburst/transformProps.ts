@@ -134,14 +134,23 @@ export function formatTooltip({
     .toString()
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;');
-  const rows = [[t('% of total'), absolutePercentage]];
+  
+  // commented by lakshman on 13th Jan 2026
+  // const rows = [[t('% of total'), absolutePercentage]];
+  const rows = [[t('% of total'),`<span style="margin-left:8px;font-weight:200">${absolutePercentage}</span>`,]];
+
   if (parentNode) {
     const conditionalPercentage = percentFormatter(
       node.value / parentNode.value,
     );
-    rows.push([t('% of parent'), conditionalPercentage]);
+    // commented by lakshman on 13th Jan 2026
+    // rows.push([t('% of parent'), conditionalPercentage]);
+    rows.push([t('% of parent'),`<span style="margin-left:8px;font-weight:200">${conditionalPercentage}</span>`,]);
   }
-  rows.push([metricLabel, formattedValue]);
+  
+  // commented by lakshman on 13th Jan 2026
+  // rows.push([metricLabel, formattedValue]);
+  rows.push([metricLabel,`<span style="margin-left:8px;font-weight:200">${formattedValue}</span>`,]);
   if (!colorByCategory) {
     rows.push([
       secondaryMetricLabel || NULL_STRING,

@@ -22,6 +22,7 @@ import {
   useLayoutEffect,
   useMemo,
   useState,
+  useRef,
   MouseEvent,
   KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
@@ -283,6 +284,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
     height: 0,
   });
   // keep track of whether column order changed, so that column widths can too
+  const tableContainerRef = useRef<HTMLDivElement | null>(null);
   const [columnOrderToggle, setColumnOrderToggle] = useState(false);
   const [showComparisonDropdown, setShowComparisonDropdown] = useState(false);
   const [selectedComparisonColumns, setSelectedComparisonColumns] = useState([
@@ -1044,6 +1046,29 @@ export default function TableChart<D extends DataRecord = DataRecord>(
     },
     [],
   );
+  useLayoutEffect(() => {
+  if (!tableContainerRef.current) {
+    return;
+  }
+  const element = tableContainerRef.current;
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const { width: observedWidth, height: observedHeight } =
+        entry.contentRect;
+      if (observedWidth > 0 && observedHeight > 0) {
+        const scrollBarSize = getScrollBarSize();
+        setTableSize({
+          width: observedWidth - scrollBarSize,
+          height: observedHeight - scrollBarSize,
+        });
+      }
+    }
+  });
+  observer.observe(element);
+  return () => {
+    observer.disconnect();
+  };
+  }, []);
 
   useLayoutEffect(() => {
     // After initial load the table should resize only when the new sizes
@@ -1075,6 +1100,11 @@ export default function TableChart<D extends DataRecord = DataRecord>(
 
   return (
     <Styles>
+      <div
+        ref={tableContainerRef}
+        style={{ width: '100%', height: '100%' }}
+      >
+
       <DataTable<D>
         columns={columns}
         data={data}
@@ -1102,6 +1132,7 @@ export default function TableChart<D extends DataRecord = DataRecord>(
           isUsingTimeComparison ? renderTimeComparisonDropdown : undefined
         }
       />
+        </div>
     </Styles>
   );
 }
