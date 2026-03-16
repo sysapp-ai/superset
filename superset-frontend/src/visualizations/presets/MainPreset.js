@@ -80,6 +80,7 @@ import { PivotTableChartPlugin as PivotTableChartPluginV2 } from '@superset-ui/p
 import { HandlebarsChartPlugin } from '@superset-ui/plugin-chart-handlebars';
 import { FilterPlugins } from 'src/constants';
 import TimeTableChartPlugin from '../TimeTable';
+import { DualTableChart, ProgressBar, LiquidChart, PercentageCircularMeter, BigNumberTrend, DonutChartPlugin, CustomShapeBar, SimpleRadialBar, PluginIconChart, } from '@superset-ui/plugin-chart-sst-custom';
 
 export default class MainPreset extends Preset {
   constructor() {
@@ -171,6 +172,15 @@ export default class MainPreset extends Preset {
         new EchartsSunburstChartPlugin().configure({ key: VizType.Sunburst }),
         new HandlebarsChartPlugin().configure({ key: VizType.Handlebars }),
         new EchartsBubbleChartPlugin().configure({ key: VizType.Bubble }),
+        new DualTableChart().configure({ key: 'dual-table-chart' }),
+        new ProgressBar().configure({ key: 'progress-bar' }),
+        new LiquidChart().configure({ key: 'liquid-chart' }),
+        new PercentageCircularMeter().configure({ key: 'percentage-circular-meter' }),
+        new BigNumberTrend().configure({ key: 'big-number-trend' }),
+        new DonutChartPlugin().configure({ key: 'donut-chart' }),
+        new CustomShapeBar().configure({ key: 'custom-shape-bar' }),
+        new SimpleRadialBar().configure({ key: 'simple-radial-bar' }),
+        new PluginIconChart().configure({ key: 'icon-chart' }),
         new CartodiagramPlugin({
           defaultLayers: [
             {
