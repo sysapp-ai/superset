@@ -133,3 +133,32 @@ try:
     )
 except ImportError:
     logger.info("Using default Docker config...")
+
+# ==============================
+# Custom Superset Configuration
+# ==============================
+
+# Enable advanced feature flags
+FEATURE_FLAGS = {
+    "ALERT_REPORTS": True,
+    "EMBEDDED_SUPERSET": True,
+}
+
+# Allow embedding (for iframe integrations)
+OVERRIDE_HTTP_HEADERS = {
+    "X-Frame-Options": "ALLOWALL",
+}
+
+# Disable Talisman (security wrapper blocking embedding)
+TALISMAN_ENABLED = False
+
+# Enable Cross-Origin Resource Sharing
+ENABLE_CORS = True
+
+# Allow framing from anywhere (for dashboards in external apps)
+HTTP_HEADERS = {
+    "X-Frame-Options": "ALLOWALL",
+}
+
+# Assign the guest user role for embedded dashboards
+GUEST_ROLE_NAME = 'Gamma'
