@@ -378,6 +378,7 @@ const config = {
             path.resolve(__dirname, p),
           ), // redundant but required for windows
           path.resolve('/home/vspl-34/sst-plugins/src/sst-custom-plugins'),  // for new path
+          // path.resolve('/opt/sst-plugins/src/sst-custom-plugins'),
           /@encodable/,
         ],
         use: [babelLoader],
