@@ -29,6 +29,7 @@ x-superset-volumes: &superset-volumes
   - ./superset-frontend:/app/superset-frontend
   - superset_home:/app/superset_home
   - ./tests:/app/tests
+  - /home/vspl-34/sst-plugins/src/sst-custom-plugins:/app/superset-frontend/plugins/sst-custom-plugins
 
 x-common-build: &common-build
   context: .
