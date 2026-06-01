@@ -80,7 +80,7 @@ import { PivotTableChartPlugin as PivotTableChartPluginV2 } from '@superset-ui/p
 import { HandlebarsChartPlugin } from '@superset-ui/plugin-chart-handlebars';
 import { FilterPlugins } from 'src/constants';
 import TimeTableChartPlugin from '../TimeTable';
-import { DualTableChart, ProgressBar, LiquidChart, PercentageCircularMeter, BigNumberTrend, DonutChartPlugin, CustomShapeBar, SimpleRadialBar, PluginIconChart, } from '@superset-ui/plugin-chart-sst-custom';
+import { DualTableChart, ProgressBar, LiquidChart, PercentageCircularMeter, BigNumberTrend, DonutChartPlugin, CustomShapeBar, SimpleRadialBar, PluginIconChart, CustomGaugeChartPlugin, } from '@superset-ui/plugin-chart-sst-custom';
 
 export default class MainPreset extends Preset {
   constructor() {
@@ -181,6 +181,7 @@ export default class MainPreset extends Preset {
         new CustomShapeBar().configure({ key: 'custom-shape-bar' }),
         new SimpleRadialBar().configure({ key: 'simple-radial-bar' }),
         new PluginIconChart().configure({ key: 'icon-chart' }),
+        new CustomGaugeChartPlugin().configure({ key: 'custom-gauge' }),
         new CartodiagramPlugin({
           defaultLayers: [
             {
