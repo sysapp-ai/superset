@@ -193,7 +193,9 @@ export default typedMemo(function DataTable<D extends object>({
     {
       columns,
       data,
-      initialState,
+      //      initialState,
+      //    comment added by Lakshman referred by Dhanush on 3rd Jun, 2026
+      initialState: {...initialState, sortBy: [{id: '0',desc: false,},],},
       getTableSize: defaultGetTableSize,
       globalFilter: defaultGlobalFilter,
       sortTypes,
