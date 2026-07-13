@@ -145,6 +145,7 @@ except ImportError:
 FEATURE_FLAGS = {
     "ALERT_REPORTS": True,
     "EMBEDDED_SUPERSET": True,
+    "HORIZONTAL_FILTER_BAR": True,
 }
 
 # Allow embedding (for iframe integrations)
