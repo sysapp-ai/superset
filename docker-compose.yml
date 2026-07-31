@@ -86,6 +86,7 @@ services:
         condition: service_completed_successfully
     volumes: *superset-volumes
     environment:
+      TZ: America/Los_Angeles
       CYPRESS_CONFIG: "${CYPRESS_CONFIG:-}"
       SUPERSET_LOG_LEVEL: "${SUPERSET_LOG_LEVEL:-info}"
 
@@ -137,6 +138,7 @@ services:
     user: *superset-user
     volumes: *superset-volumes
     environment:
+      TZ: America/Los_Angeles
       CYPRESS_CONFIG: "${CYPRESS_CONFIG:-}"
       SUPERSET_LOAD_EXAMPLES: "${SUPERSET_LOAD_EXAMPLES:-no}"
       SUPERSET_LOG_LEVEL: "${SUPERSET_LOG_LEVEL:-info}"
@@ -177,6 +179,7 @@ services:
     env_file:
        - docker/.env # default
     environment:
+      TZ: America/Los_Angeles
       CELERYD_CONCURRENCY: 2
       CYPRESS_CONFIG: "${CYPRESS_CONFIG:-}"
       SUPERSET_LOG_LEVEL: "${SUPERSET_LOG_LEVEL:-info}"
@@ -209,6 +212,7 @@ services:
     healthcheck:
       disable: true
     environment:
+      TZ: America/Los_Angeles
       CYPRESS_CONFIG: "${CYPRESS_CONFIG:-}"
       SUPERSET_LOG_LEVEL: "${SUPERSET_LOG_LEVEL:-info}"
 
@@ -222,6 +226,7 @@ services:
     profiles:
       - optional
     environment:
+      TZ: America/Los_Angeles
       DATABASE_HOST: localhost
       DATABASE_DB: test
       REDIS_CELERY_DB: 2
