@@ -238,6 +238,16 @@ const ChartHolder = ({
     }));
   }, []);
 
+  const chartNameSlug = (
+    component.meta.sliceNameOverride ||
+    component.meta.sliceName ||
+    ''
+  )
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+
   const renderChild = useCallback(
     ({ dragSourceRef }) => (
       <ResizableContainer
@@ -259,6 +269,7 @@ const ChartHolder = ({
         <div
           ref={dragSourceRef}
           data-test="dashboard-component-chart-holder"
+          data-chart-name={chartNameSlug}
           style={focusHighlightStyles}
           css={isFullSize ? fullSizeStyle : undefined}
           className={cx(
