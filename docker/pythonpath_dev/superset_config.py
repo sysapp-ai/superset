@@ -146,6 +146,7 @@ FEATURE_FLAGS = {
     "ALERT_REPORTS": True,
     "EMBEDDED_SUPERSET": True,
     "HORIZONTAL_FILTER_BAR": True,
+    "ENABLE_TEMPLATE_PROCESSING": True,
 }
 
 # Allow embedding (for iframe integrations)
