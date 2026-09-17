@@ -56,6 +56,8 @@ import { EMPTY_CONTAINER_Z_INDEX } from 'src/dashboard/constants';
 import { isCurrentUserBot } from 'src/utils/isBot';
 import { useDebouncedEffect } from '../../../explore/exploreUtils';
 
+
+const MIN_DASHBOARD_WIDTH = 1660;   
 const propTypes = {
   id: PropTypes.string.isRequired,
   parentId: PropTypes.string.isRequired,
@@ -88,6 +90,29 @@ const GridRow = styled.div`
     flex-wrap: nowrap;
     align-items: flex-start;
     width: 100%;
+    /* Do not allow the grid row to become smaller than
+     * 1660px in edit mode(101). In view mode(103-107), allow horizontal scrolling
+     * if the screen size is smaller than the required width of children.
+     */
+    ${editMode
+      ? css`
+          min-width: ${MIN_DASHBOARD_WIDTH}px;   /* Lock canvas to 1660px floor */
+        `
+      : css`
+          min-width: 100%;                       /* Span full viewport width */
+          overflow-x: auto;                      /* Allow horizontal scroll */
+          overflow-y: hidden;                    /* Clip vertical overflow */
+          -webkit-overflow-scrolling: touch;     /*Smooth scrolling */
+
+          &::-webkit-scrollbar {
+            height: 6px;                         /* Slim 6px horizontal scrollbar */
+          }
+          &::-webkit-scrollbar-thumb {
+            background-color: ${theme.colors.grayscale.light1};   /* Scrollbar color */
+            border-radius: 3px;                  /* Rounded pill edges for scroll */
+          }
+        `}
+    box-sizing: border-box;
     height: fit-content;
 
     & > :not(:last-child):not(.hover-menu) {

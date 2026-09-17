@@ -63,11 +63,18 @@ const HANDLE_CLASSES = {
   bottom: 'resizable-container-handle--bottom',
 };
 // @ts-ignore
-const StyledResizable = styled(Resizable)`
-  ${({ theme }) => css`
+const StyledResizable = styled(Resizable, {
+  shouldForwardProp: prop => prop !== 'editMode' && prop !== 'widthMultiple',
+}) <{ editMode?: boolean; widthMultiple?: number }>`
+  ${({ theme, editMode, widthMultiple = 1 }) => css`
     &.resizable-container {
       background-color: transparent;
       position: relative;
+
+      ${!editMode &&
+    css`
+        min-width: ${widthMultiple * 125}px !important;
+      `}
 
       /* re-resizable sets an empty div to 100% width and height, which doesn't
       play well with many 100% height containers we need */
@@ -276,6 +283,8 @@ export default function ResizableContainer({
 
   return (
     <StyledResizable
+      editMode={editMode}
+      widthMultiple={widthMultiple}
       enable={enableConfig}
       grid={SNAP_TO_GRID}
       gridGap={undefined}
