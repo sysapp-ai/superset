@@ -80,7 +80,7 @@ import { PivotTableChartPlugin as PivotTableChartPluginV2 } from '@superset-ui/p
 import { HandlebarsChartPlugin } from '@superset-ui/plugin-chart-handlebars';
 import { FilterPlugins } from 'src/constants';
 import TimeTableChartPlugin from '../TimeTable';
-import { DualTableChart, ProgressBar, LiquidChart, PercentageCircularMeter, BigNumberTrend, DonutChartPlugin, CustomShapeBar, SimpleRadialBar, PluginIconChart, CustomGaugeChartPlugin, KpiBigNumberBarTrend, EchartsFunnelProgression, KpiSummaryCard, } from '@superset-ui/plugin-chart-sst-custom';
+import { DualTableChart, ProgressBar, LiquidChart, PercentageCircularMeter, BigNumberTrend, DonutChartPlugin, CustomShapeBar, SimpleRadialBar, PluginIconChart, CustomGaugeChartPlugin, KpiBigNumberBarTrend, EchartsFunnelProgression, KpiSummaryCard, CustomTableChart, } from '@superset-ui/plugin-chart-sst-custom';
 
 export default class MainPreset extends Preset {
   constructor() {
@@ -185,6 +185,7 @@ export default class MainPreset extends Preset {
         new KpiBigNumberBarTrend().configure({ key: 'kpi-big-number-bar-trend' }),
         new EchartsFunnelProgression().configure({ key: 'funnel-progression' }),
         new KpiSummaryCard().configure({ key: 'kpi-summary-card' }),
+        new CustomTableChart().configure({ key: 'custom-table-chart' }),
         new CartodiagramPlugin({
           defaultLayers: [
             {
